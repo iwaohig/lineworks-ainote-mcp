@@ -366,6 +366,10 @@ def get_note_summary(note_id: str) -> dict[str, Any]:
     get_note_transcript で全文を取得する。transcriptBlocks は文字起こしの
     発言ブロック数で、全文を取る際の max_blocks の目安になる。
 
+    要約はノートの作成者が AiNote 上でテンプレートを選んで生成するもの。
+    summaries が空の場合は作成者が要約を生成していないので、内容を知るには
+    get_note_transcript で全文を読む。
+
     Args:
         note_id: ノートID。list_notes または search_notes の結果から得る。
     """
