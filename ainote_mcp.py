@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.12"
-# dependencies = ["mcp>=2", "httpx>=0.27", "keyring>=25"]
+# dependencies = ["mcp>=2,<3", "httpx>=0.27", "keyring>=25"]
 # ///
 """LINE WORKS AiNote (AI議事録) を Claude から参照する MCP サーバー (読み取り専用)。
 
@@ -110,8 +110,8 @@ def _delete(key: str) -> None:
 def _save_tokens(tokens: dict[str, Any]) -> None:
     _store("access_token", tokens["access_token"])
     _store("expires_at", str(time.time() + int(tokens.get("expires_in", 3600))))
-    # Refresh Token Rotation が有効なテナントでは新しい refresh_token が返る
     if tokens.get("refresh_token"):
+        # リフレッシュ時に新しい refresh_token が返ることがある (Refresh Token Rotation)
         _store("refresh_token", tokens["refresh_token"])
 
 
@@ -141,6 +141,7 @@ def _receive_code(auth_url: str, expected_state: str) -> str:
             result["code"] = (q.get("code") or [None])[0]
             result["state"] = (q.get("state") or [None])[0]
             result["error"] = (q.get("error") or [None])[0]
+            result["error_description"] = (q.get("error_description") or [None])[0]
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.end_headers()
@@ -159,7 +160,8 @@ def _receive_code(auth_url: str, expected_state: str) -> str:
         srv.handle_request()
 
     if result.get("error"):
-        raise SystemExit(f"認可が拒否されました: {result['error']}")
+        desc = result.get("error_description") or ""
+        raise SystemExit(f"認可が拒否されました: {result['error']} {desc}".rstrip())
     if result.get("state") != expected_state:
         raise SystemExit("state が一致しません。認可をやり直してください。")
     if not result.get("code"):
@@ -339,12 +341,26 @@ def list_notes(count: int = 20, cursor: str | None = None) -> dict[str, Any]:
     return _note_list(api_get("users/me/ainote/notes", {"count": count, "cursor": cursor}))
 
 
+_SEARCH_MIN_INTERVAL = 1.0  # 秒。検索 API の上限 60 回/分に合わせる
+_last_search_at = 0.0
+
+
+def _throttle_search() -> None:
+    """検索 API の呼び出し間隔を 1 秒以上あける。"""
+    global _last_search_at
+    wait = _SEARCH_MIN_INTERVAL - (time.monotonic() - _last_search_at)
+    if wait > 0:
+        time.sleep(wait)
+    _last_search_at = time.monotonic()
+
+
 @server.tool()
 def search_notes(query: str, count: int = 20, cursor: str | None = None) -> dict[str, Any]:
     """AiNote のノートをキーワードで検索する。要約も文字起こしも含まない。
 
-    検索 API の呼び出し上限は 60 回/分と他より厳しい。
-    同じ条件で繰り返し呼ばず、cursor でページを進めること。
+    検索 API の呼び出し上限は 60 回/分と他より厳しい (ツール側で 1 秒間隔に制限する)。
+    同じ意図でキーワードを言い換えて繰り返し検索しないこと。
+    件数が足りない場合は cursor でページを進める。
 
     Args:
         query: 検索キーワード (必須)。
@@ -353,6 +369,7 @@ def search_notes(query: str, count: int = 20, cursor: str | None = None) -> dict
     """
     if not query or not query.strip():
         raise ToolError("query は必須です。検索キーワードを指定してください。")
+    _throttle_search()
     return _note_list(
         api_get("users/me/ainote/search", {"query": query.strip(), "count": count, "cursor": cursor})
     )

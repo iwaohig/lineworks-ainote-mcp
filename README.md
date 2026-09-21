@@ -68,5 +68,13 @@ uv run ainote_mcp.py logout
 ## 制限
 
 - AiNote API は User Account 認証専用です。Service Account (JWT) では利用できません
-- 検索 API の呼び出し上限は 60 回/分です
+- 検索 API の呼び出し上限は 60 回/分です。ツール側で 1 秒間隔に制限しています
 - 削除 API と統計系 API (管理者権限が必要) は実装していません
+- 管理者による利用制御やマスキングはありません。どのノートを Claude に読ませるかは利用者の判断になります
+
+## 動作確認環境
+
+- Windows 11 (資格情報マネージャー) で確認済み
+- macOS はキーチェーンで動く設計ですが未確認です
+- Linux / WSL では keyring のバックエンド (Secret Service など) が必要です。
+  ない環境では起動時にエラーになります。`keyrings.alt` を入れると動きますが平文保存になります
