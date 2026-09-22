@@ -10,7 +10,8 @@ LINE WORKS AiNote (AI議事録) のノートを Claude から参照するため�
 解説記事 (Qiita):
 
 - [LINE WORKS API AiNote の議事録 (文字起こし・要約) を取得する](https://qiita.com/iwaohig/items/bc95a027d76dab19647c): API の使い方とレスポンスの実例
-- [LINE WORKS AiNote の議事録を Claude に読ませる MCP サーバーを作る](https://qiita.com/iwaohig/items/c7d7c1b0902613ee83cc): この MCP サーバーの設計
+- LINE WORKS AiNote の議事録を Claude に読ませる MCP サーバーを作る: この MCP サーバーの設計 (近日公開)
+<!-- 公開後にリンクを戻す: https://qiita.com/iwaohig/items/c7d7c1b0902613ee83cc -->
 
 | ツール | 内容 |
 |---|---|
