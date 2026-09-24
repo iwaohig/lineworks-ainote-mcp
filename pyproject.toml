@@ -1,0 +1,38 @@
+[project]
+name = "lineworks-ainote-mcp"
+version = "0.1.0"
+description = "Unofficial read-only MCP server for LINE WORKS AiNote (AI meeting notes): list, search, and read summaries and transcripts from Claude."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Iwao Higashimoto" }]
+requires-python = ">=3.12"
+dependencies = ["mcp>=2,<3", "httpx>=0.27", "keyring>=25"]
+keywords = ["mcp", "model-context-protocol", "line-works", "lineworks", "ainote", "claude"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Communications",
+  "Topic :: Office/Business",
+]
+
+[project.urls]
+Homepage = "https://github.com/iwaohig/lineworks-ainote-mcp"
+Repository = "https://github.com/iwaohig/lineworks-ainote-mcp"
+Issues = "https://github.com/iwaohig/lineworks-ainote-mcp/issues"
+
+[project.scripts]
+lineworks-ainote-mcp = "ainote_mcp:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+only-include = ["ainote_mcp.py"]
+
+[tool.hatch.build.targets.sdist]
+only-include = ["ainote_mcp.py", "README.md", "LICENSE", "pyproject.toml", "server.json"]

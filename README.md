@@ -1,5 +1,7 @@
 # lineworks-ainote-mcp
 
+<!-- mcp-name: io.github.iwaohig/lineworks-ainote-mcp -->
+
 > **Unofficial community project.** This is a personal, read-only MCP server for
 > [LINE WORKS AiNote](https://line-works.com/) (AI meeting notes). It is not an official
 > LINE WORKS product and is not affiliated with, endorsed by, or supported by LINE WORKS Corp.
@@ -71,6 +73,28 @@ Claude Desktop (`claude_desktop_config.json`):
     }
   }
 }
+```
+
+#### PyPI からインストールする場合 (`uvx`)
+
+リポジトリを clone せずに使う場合は PyPI のパッケージ `lineworks-ainote-mcp` を `uvx` で起動できます。
+初回ログインは `uvx lineworks-ainote-mcp auth`、ログアウトは `uvx lineworks-ainote-mcp logout` です。
+
+```json
+{
+  "mcpServers": {
+    "lineworks-ainote": {
+      "command": "uvx",
+      "args": ["lineworks-ainote-mcp"]
+    }
+  }
+}
+```
+
+Claude Code の場合:
+
+```bash
+claude mcp add -s user lineworks-ainote -- uvx lineworks-ainote-mcp
 ```
 
 Windows で `uv` が見つからない場合は `command` にフルパスを書いてください。
