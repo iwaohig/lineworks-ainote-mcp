@@ -1,6 +1,20 @@
 # lineworks-ainote-mcp
 
+> **Unofficial community project.** This is a personal, read-only MCP server for
+> [LINE WORKS AiNote](https://line-works.com/) (AI meeting notes). It is not an official
+> LINE WORKS product and is not affiliated with, endorsed by, or supported by LINE WORKS Corp.
+> Provided as-is under the [MIT License](LICENSE).
+>
+> It lets Claude (or any MCP client) list, search, and read AiNote summaries and transcripts.
+> LINE WORKS also offers an official **WORKS MCP** for mail, calendar, and tasks; AiNote is not
+> part of it as of September 2026, so this project is meant to be used alongside it, not instead of it.
+> Documentation below is in Japanese. See [Support](#support--サポートについて) for what is and
+> is not covered here.
+
 LINE WORKS AiNote (AI議事録) のノートを Claude から参照するための MCP サーバーです。読み取り専用。
+**個人が公開している非公式の実装で、LINE WORKS の公式製品・公式サポートの対象ではありません。**
+公式の WORKS MCP (メール・カレンダー・タスク) には 2026 年 9 月時点で AiNote が含まれていないため、
+その補完として併用する想定です。
 
 | 入口 | 内容 |
 |---|---|
@@ -88,3 +102,32 @@ uv run ainote_mcp.py logout
 - macOS はキーチェーンで動く設計ですが未確認です
 - Linux / WSL では keyring のバックエンド (Secret Service など) が必要です。
   ない環境では起動時にエラーになります。`keyrings.alt` を入れると動きますが平文保存になります
+
+## Support / サポートについて
+
+**English**
+
+- This project is provided as-is under the MIT License, with no warranty and no guaranteed
+  response time. It is maintained in a personal capacity.
+- Issues and pull requests are welcome for problems **in this MCP server itself**: setup,
+  the authentication flow, tool behavior, and documentation.
+- Problems with the AiNote service or the LINE WORKS API (API errors, scopes not available in
+  your Developer Console, summaries not being generated, plan eligibility) are outside the scope
+  of this project. Please refer to the [LINE WORKS Developers](https://developers.worksmobile.com/)
+  documentation and the official LINE WORKS support channels.
+- Answers in issues are based on the public LINE WORKS Developers documentation and on behavior
+  observed on a production tenant. They are not official statements about the product.
+- If this project stops being maintained, the repository will be archived and a notice added here.
+
+**日本語**
+
+- 本プロジェクトは MIT ライセンスで現状のまま提供します。保証や応答期限はなく、個人として保守しています
+- Issue / Pull Request は**この MCP サーバー自体の問題** (セットアップ、認証フロー、ツールの挙動、
+  ドキュメント) について受け付けます
+- AiNote や LINE WORKS API 側の問題 (API エラー、Developer Console でスコープが選べない、
+  要約が生成されない、プランの対応状況) は本プロジェクトの範囲外です。
+  [LINE WORKS Developers](https://developers.worksmobile.com/) のドキュメントと
+  LINE WORKS の公式サポート窓口をご利用ください
+- Issue での回答は公開ドキュメントと製品テナントでの動作確認に基づくもので、
+  製品についての公式な見解ではありません
+- メンテナンスを終了する場合はリポジトリをアーカイブし、ここに記載します
