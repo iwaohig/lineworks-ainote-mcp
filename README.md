@@ -47,7 +47,7 @@ LINE WORKS AiNote (AI議事録) のノートを Claude から参照するため�
 
 1. [LINE WORKS Developer Console](https://developers.worksmobile.com/) でアプリを新規追加
 2. OAuth Scopes に `ainote.read` を追加
-3. Redirect URL に `http://localhost:8765/callback` を登録 (完全一致が必要)
+3. Redirect URL に `http://localhost:8765/callback` を登録 (「追加」を押してから保存)
 4. Client ID と Client Secret を控える
 
 ### 2. 初回ログイン
